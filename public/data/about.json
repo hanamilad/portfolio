@@ -1,0 +1,32 @@
+{
+  "name": "Hanna",
+  "title": "Fullstack Developer",
+  "subtitle": "Building scalable web applications with modern technologies",
+  "bio": "Passionate Fullstack Developer with expertise in both frontend and backend technologies. I specialize in creating elegant, performant solutions that solve real-world problems. With a strong foundation in modern frameworks and a keen eye for detail, I bring ideas to life through clean, maintainable code.",
+  "image": "/img/profile.jpg",
+  "resumeUrl": "#",
+  "links": {
+    "github": "https://github.com/username",
+    "linkedin": "https://linkedin.com/in/username",
+    "twitter": "https://twitter.com/username",
+    "email": "hanna@example.com"
+  },
+  "stats": [
+    {
+      "label": "Years Experience",
+      "value": "5+"
+    },
+    {
+      "label": "Projects Completed",
+      "value": "50+"
+    },
+    {
+      "label": "Technologies",
+      "value": "20+"
+    },
+    {
+      "label": "Happy Clients",
+      "value": "30+"
+    }
+  ]
+}
