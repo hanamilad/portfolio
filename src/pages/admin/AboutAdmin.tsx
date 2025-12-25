@@ -22,6 +22,9 @@ export default function AboutAdmin() {
     linkedin_url: "",
     email: "",
     resume_url: "",
+    years_experience: 5,
+    technologies_count: 20,
+    happy_clients: 15,
   });
 
   useEffect(() => {
@@ -35,6 +38,9 @@ export default function AboutAdmin() {
         linkedin_url: about.linkedin_url || "",
         email: about.email || "",
         resume_url: about.resume_url || "",
+        years_experience: about.years_experience ?? 5,
+        technologies_count: about.technologies_count ?? 20,
+        happy_clients: about.happy_clients ?? 15,
       });
     }
   }, [about]);
@@ -171,6 +177,52 @@ export default function AboutAdmin() {
                 placeholder="https://linkedin.com/in/username"
               />
             </div>
+          </div>
+
+          {/* Stats Section */}
+          <div className="border-t pt-6 mt-6">
+            <h3 className="text-lg font-semibold mb-4">إحصائيات القسم</h3>
+            <div className="grid md:grid-cols-3 gap-6">
+              <div className="space-y-2">
+                <Label htmlFor="years_experience">سنوات الخبرة</Label>
+                <Input
+                  id="years_experience"
+                  type="number"
+                  min="0"
+                  value={formData.years_experience}
+                  onChange={(e) =>
+                    setFormData({ ...formData, years_experience: parseInt(e.target.value) || 0 })
+                  }
+                />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="technologies_count">عدد التقنيات</Label>
+                <Input
+                  id="technologies_count"
+                  type="number"
+                  min="0"
+                  value={formData.technologies_count}
+                  onChange={(e) =>
+                    setFormData({ ...formData, technologies_count: parseInt(e.target.value) || 0 })
+                  }
+                />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="happy_clients">العملاء السعداء</Label>
+                <Input
+                  id="happy_clients"
+                  type="number"
+                  min="0"
+                  value={formData.happy_clients}
+                  onChange={(e) =>
+                    setFormData({ ...formData, happy_clients: parseInt(e.target.value) || 0 })
+                  }
+                />
+              </div>
+            </div>
+            <p className="text-xs text-muted-foreground mt-2">
+              عدد المشاريع يتم حسابه تلقائياً من المشاريع المضافة
+            </p>
           </div>
 
           <Button
