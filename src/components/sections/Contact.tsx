@@ -4,26 +4,21 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
-import { toast } from "sonner";
 import { useContact } from "@/hooks/useContact";
 import { useAbout } from "@/hooks/useAbout";
+import { useSubmitContactMessage } from "@/hooks/useContactMessages";
 import { Mail, Phone, MapPin, Github, Linkedin, Send } from "lucide-react";
 
 export default function Contact() {
   const { data: contact, isLoading: contactLoading } = useContact();
   const { data: about } = useAbout();
   const [formData, setFormData] = useState({ name: "", email: "", message: "" });
-  const [submitting, setSubmitting] = useState(false);
+  const submitMessage = useSubmitContactMessage();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setSubmitting(true);
-
-    // Simulate form submission
-    await new Promise((resolve) => setTimeout(resolve, 1000));
-    toast.info("Message received! Contact form backend can be enabled via admin settings.");
+    await submitMessage.mutateAsync(formData);
     setFormData({ name: "", email: "", message: "" });
-    setSubmitting(false);
   };
 
   if (contactLoading) {
@@ -187,9 +182,9 @@ export default function Contact() {
                   type="submit"
                   size="lg"
                   className="w-full bg-gradient-primary hover:shadow-glow transition-all"
-                  disabled={submitting}
+                  disabled={submitMessage.isPending}
                 >
-                  {submitting ? "Sending..." : (
+                  {submitMessage.isPending ? "Sending..." : (
                     <>
                       <Send className="mr-2 h-4 w-4" />
                       Send Message
