@@ -5,6 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { useAbout, useUpdateAbout } from "@/hooks/useAbout";
+import ImageUpload from "@/components/admin/ImageUpload";
 import { Save } from "lucide-react";
 
 export default function AboutAdmin() {
@@ -60,64 +61,60 @@ export default function AboutAdmin() {
 
       <Card className="p-6">
         <form onSubmit={handleSubmit} className="space-y-6">
-          <div className="grid md:grid-cols-2 gap-6">
+          <div className="grid md:grid-cols-3 gap-6">
+            {/* Profile Image */}
             <div className="space-y-2">
-              <Label htmlFor="name">Name *</Label>
-              <Input
-                id="name"
-                value={formData.name}
-                onChange={(e) =>
-                  setFormData({ ...formData, name: e.target.value })
-                }
-                required
+              <Label>Profile Image</Label>
+              <ImageUpload
+                value={formData.image_url}
+                onChange={(url) => setFormData({ ...formData, image_url: url })}
+                onRemove={() => setFormData({ ...formData, image_url: "" })}
+                folder="profile"
+                aspectRatio="square"
               />
             </div>
-            <div className="space-y-2">
-              <Label htmlFor="title">Title *</Label>
-              <Input
-                id="title"
-                value={formData.title}
-                onChange={(e) =>
-                  setFormData({ ...formData, title: e.target.value })
-                }
-                placeholder="Fullstack Developer"
-                required
-              />
-            </div>
-          </div>
 
-          <div className="space-y-2">
-            <Label htmlFor="bio">Bio</Label>
-            <Textarea
-              id="bio"
-              value={formData.bio}
-              onChange={(e) =>
-                setFormData({ ...formData, bio: e.target.value })
-              }
-              rows={6}
-              placeholder="Tell visitors about yourself..."
-            />
-          </div>
+            {/* Name & Title */}
+            <div className="md:col-span-2 space-y-6">
+              <div className="grid md:grid-cols-2 gap-6">
+                <div className="space-y-2">
+                  <Label htmlFor="name">Name *</Label>
+                  <Input
+                    id="name"
+                    value={formData.name}
+                    onChange={(e) =>
+                      setFormData({ ...formData, name: e.target.value })
+                    }
+                    required
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="title">Title *</Label>
+                  <Input
+                    id="title"
+                    value={formData.title}
+                    onChange={(e) =>
+                      setFormData({ ...formData, title: e.target.value })
+                    }
+                    placeholder="Fullstack Developer"
+                    required
+                  />
+                </div>
+              </div>
 
-          <div className="space-y-2">
-            <Label htmlFor="image_url">Profile Image URL</Label>
-            <Input
-              id="image_url"
-              value={formData.image_url}
-              onChange={(e) =>
-                setFormData({ ...formData, image_url: e.target.value })
-              }
-              placeholder="/img/profile.jpg or https://..."
-            />
-            {formData.image_url && (
-              <div className="mt-2">
-                <img
-                  src={formData.image_url}
-                  alt="Profile preview"
-                  className="w-32 h-32 rounded-lg object-cover"
+              <div className="space-y-2">
+                <Label htmlFor="bio">Bio</Label>
+                <Textarea
+                  id="bio"
+                  value={formData.bio}
+                  onChange={(e) =>
+                    setFormData({ ...formData, bio: e.target.value })
+                  }
+                  rows={6}
+                  placeholder="Tell visitors about yourself..."
                 />
               </div>
-            )}
+            </div>
           </div>
 
           <div className="grid md:grid-cols-3 gap-6">
