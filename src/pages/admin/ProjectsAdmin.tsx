@@ -38,6 +38,7 @@ import {
   useReorderProjects,
   Project,
 } from "@/hooks/useProjects";
+import MultiImageUpload from "@/components/admin/MultiImageUpload";
 import {
   Plus,
   Pencil,
@@ -61,7 +62,7 @@ interface ProjectFormData {
   slug: string;
   short_description: string;
   description: string;
-  images: string;
+  images: string[];
   tech: string;
   tags: string;
   github_url: string;
@@ -75,7 +76,7 @@ const emptyForm: ProjectFormData = {
   slug: "",
   short_description: "",
   description: "",
-  images: "",
+  images: [],
   tech: "",
   tags: "",
   github_url: "",
@@ -110,7 +111,7 @@ export default function ProjectsAdmin() {
       slug: project.slug,
       short_description: project.short_description || "",
       description: project.description || "",
-      images: project.images?.join(", ") || "",
+      images: project.images || [],
       tech: project.tech?.join(", ") || "",
       tags: project.tags?.join(", ") || "",
       github_url: project.github_url || "",
@@ -129,7 +130,7 @@ export default function ProjectsAdmin() {
       slug: formData.slug || generateSlug(formData.name),
       short_description: formData.short_description || null,
       description: formData.description || null,
-      images: formData.images.split(",").map((s) => s.trim()).filter(Boolean),
+      images: formData.images,
       tech: formData.tech.split(",").map((s) => s.trim()).filter(Boolean),
       tags: formData.tags.split(",").map((s) => s.trim()).filter(Boolean),
       github_url: formData.github_url || null,
@@ -252,14 +253,12 @@ export default function ProjectsAdmin() {
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="images">Images (comma-separated URLs)</Label>
-                <Input
-                  id="images"
+                <Label>Project Images</Label>
+                <MultiImageUpload
                   value={formData.images}
-                  onChange={(e) =>
-                    setFormData({ ...formData, images: e.target.value })
-                  }
-                  placeholder="/img/project1.jpg, /img/project2.jpg"
+                  onChange={(images) => setFormData({ ...formData, images })}
+                  folder="projects"
+                  maxImages={6}
                 />
               </div>
 
@@ -400,12 +399,16 @@ export default function ProjectsAdmin() {
                 </div>
 
                 {/* Image */}
-                {project.images?.[0] && (
+                {project.images?.[0] ? (
                   <img
                     src={project.images[0]}
                     alt={project.name}
                     className="w-20 h-14 rounded object-cover"
                   />
+                ) : (
+                  <div className="w-20 h-14 rounded bg-muted flex items-center justify-center text-muted-foreground text-xs">
+                    No image
+                  </div>
                 )}
 
                 {/* Info */}
