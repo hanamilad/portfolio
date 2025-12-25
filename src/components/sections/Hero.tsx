@@ -1,32 +1,11 @@
-import { useEffect, useState } from "react";
 import { ArrowRight, Download, Github, Linkedin, Mail } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { loadData } from "@/lib/dataLoader";
-
-interface AboutData {
-  name: string;
-  title: string;
-  subtitle: string;
-  resumeUrl: string;
-  links: {
-    github: string;
-    linkedin: string;
-    email: string;
-  };
-}
+import { useAbout } from "@/hooks/useAbout";
 
 export default function Hero() {
-  const [data, setData] = useState<AboutData | null>(null);
-  const [loading, setLoading] = useState(true);
+  const { data, isLoading } = useAbout();
 
-  useEffect(() => {
-    loadData("about")
-      .then(setData)
-      .catch(console.error)
-      .finally(() => setLoading(false));
-  }, []);
-
-  if (loading) {
+  if (isLoading) {
     return (
       <section className="min-h-screen flex items-center justify-center">
         <div className="animate-pulse">Loading...</div>
@@ -56,7 +35,7 @@ export default function Hero() {
               {data.title}
             </h2>
             <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-              {data.subtitle}
+              {data.bio?.split('.')[0]}.
             </p>
           </div>
 
@@ -78,8 +57,8 @@ export default function Hero() {
               className="group border-2"
               asChild
             >
-              <a href={data.resumeUrl} download>
-                Download CV
+              <a href="#projects">
+                View Projects
                 <Download className="ml-2 group-hover:translate-y-1 transition-transform" />
               </a>
             </Button>
@@ -87,36 +66,42 @@ export default function Hero() {
 
           {/* Social Links */}
           <div className="flex gap-4 justify-center animate-fade-in" style={{ animationDelay: '0.4s' }}>
-            <Button
-              size="icon"
-              variant="ghost"
-              className="hover:bg-primary hover:text-primary-foreground transition-all"
-              asChild
-            >
-              <a href={data.links.github} target="_blank" rel="noopener noreferrer">
-                <Github className="w-5 h-5" />
-              </a>
-            </Button>
-            <Button
-              size="icon"
-              variant="ghost"
-              className="hover:bg-primary hover:text-primary-foreground transition-all"
-              asChild
-            >
-              <a href={data.links.linkedin} target="_blank" rel="noopener noreferrer">
-                <Linkedin className="w-5 h-5" />
-              </a>
-            </Button>
-            <Button
-              size="icon"
-              variant="ghost"
-              className="hover:bg-primary hover:text-primary-foreground transition-all"
-              asChild
-            >
-              <a href={`mailto:${data.links.email}`}>
-                <Mail className="w-5 h-5" />
-              </a>
-            </Button>
+            {data.github_url && (
+              <Button
+                size="icon"
+                variant="ghost"
+                className="hover:bg-primary hover:text-primary-foreground transition-all"
+                asChild
+              >
+                <a href={data.github_url} target="_blank" rel="noopener noreferrer">
+                  <Github className="w-5 h-5" />
+                </a>
+              </Button>
+            )}
+            {data.linkedin_url && (
+              <Button
+                size="icon"
+                variant="ghost"
+                className="hover:bg-primary hover:text-primary-foreground transition-all"
+                asChild
+              >
+                <a href={data.linkedin_url} target="_blank" rel="noopener noreferrer">
+                  <Linkedin className="w-5 h-5" />
+                </a>
+              </Button>
+            )}
+            {data.email && (
+              <Button
+                size="icon"
+                variant="ghost"
+                className="hover:bg-primary hover:text-primary-foreground transition-all"
+                asChild
+              >
+                <a href={`mailto:${data.email}`}>
+                  <Mail className="w-5 h-5" />
+                </a>
+              </Button>
+            )}
           </div>
 
           {/* Scroll Indicator */}
