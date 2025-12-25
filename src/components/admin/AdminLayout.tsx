@@ -10,6 +10,7 @@ import {
   Code,
   Briefcase,
   Mail,
+  MessageSquare,
   LogOut,
   Menu,
   X,
@@ -26,6 +27,7 @@ const navigation = [
   { name: "Skills", href: "/admin/skills", icon: Code },
   { name: "Experience", href: "/admin/experience", icon: Briefcase },
   { name: "Contact", href: "/admin/contact", icon: Mail },
+  { name: "Messages", href: "/admin/messages", icon: MessageSquare },
 ];
 
 export default function AdminLayout({ children }: { children: ReactNode }) {

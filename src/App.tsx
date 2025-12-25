@@ -16,6 +16,7 @@ import AboutAdmin from "./pages/admin/AboutAdmin";
 import SkillsAdmin from "./pages/admin/SkillsAdmin";
 import ExperienceAdmin from "./pages/admin/ExperienceAdmin";
 import ContactAdmin from "./pages/admin/ContactAdmin";
+import MessagesAdmin from "./pages/admin/MessagesAdmin";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -40,6 +41,7 @@ const App = () => (
               <Route path="/admin/skills" element={<ProtectedRoute><AdminLayout><SkillsAdmin /></AdminLayout></ProtectedRoute>} />
               <Route path="/admin/experience" element={<ProtectedRoute><AdminLayout><ExperienceAdmin /></AdminLayout></ProtectedRoute>} />
               <Route path="/admin/contact" element={<ProtectedRoute><AdminLayout><ContactAdmin /></AdminLayout></ProtectedRoute>} />
+              <Route path="/admin/messages" element={<ProtectedRoute><AdminLayout><MessagesAdmin /></AdminLayout></ProtectedRoute>} />
               
               <Route path="*" element={<NotFound />} />
             </Routes>
