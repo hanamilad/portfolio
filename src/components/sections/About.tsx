@@ -1,12 +1,10 @@
 import { Card } from "@/components/ui/card";
 import { useAbout } from "@/hooks/useAbout";
 import { usePublicProjects } from "@/hooks/useProjects";
-import { useExperience } from "@/hooks/useExperience";
 
 export default function About() {
   const { data, isLoading } = useAbout();
   const { data: projects } = usePublicProjects();
-  const { data: experience } = useExperience();
 
   if (isLoading) {
     return (
@@ -21,16 +19,13 @@ export default function About() {
   if (!data) return null;
 
   // Calculate dynamic stats
-  const yearsOfExperience = experience?.length 
-    ? new Date().getFullYear() - parseInt(experience[experience.length - 1]?.from_date || "2020")
-    : 5;
   const projectCount = projects?.length || 0;
 
   const stats = [
-    { label: "Years Experience", value: `${yearsOfExperience}+` },
+    { label: "Years Experience", value: `${data.years_experience ?? 5}+` },
     { label: "Projects Completed", value: `${projectCount}+` },
-    { label: "Technologies", value: "20+" },
-    { label: "Happy Clients", value: "15+" },
+    { label: "Technologies", value: `${data.technologies_count ?? 20}+` },
+    { label: "Happy Clients", value: `${data.happy_clients ?? 15}+` },
   ];
 
   return (

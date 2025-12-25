@@ -12,6 +12,9 @@ export interface AboutContent {
   linkedin_url: string | null;
   email: string | null;
   resume_url: string | null;
+  years_experience: number | null;
+  technologies_count: number | null;
+  happy_clients: number | null;
   updated_at: string;
 }
 

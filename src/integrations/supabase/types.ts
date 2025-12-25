@@ -19,37 +19,46 @@ export type Database = {
           bio: string | null
           email: string | null
           github_url: string | null
+          happy_clients: number | null
           id: string
           image_url: string | null
           linkedin_url: string | null
           name: string
           resume_url: string | null
+          technologies_count: number | null
           title: string
           updated_at: string
+          years_experience: number | null
         }
         Insert: {
           bio?: string | null
           email?: string | null
           github_url?: string | null
+          happy_clients?: number | null
           id?: string
           image_url?: string | null
           linkedin_url?: string | null
           name: string
           resume_url?: string | null
+          technologies_count?: number | null
           title: string
           updated_at?: string
+          years_experience?: number | null
         }
         Update: {
           bio?: string | null
           email?: string | null
           github_url?: string | null
+          happy_clients?: number | null
           id?: string
           image_url?: string | null
           linkedin_url?: string | null
           name?: string
           resume_url?: string | null
+          technologies_count?: number | null
           title?: string
           updated_at?: string
+          years_experience?: number | null
         }
         Relationships: []
       }
