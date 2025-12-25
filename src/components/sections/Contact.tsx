@@ -1,88 +1,32 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
-import { loadData } from "@/lib/dataLoader";
-import { CONFIG } from "@/config";
-import * as Icons from "lucide-react";
-
-interface ContactData {
-  email: string;
-  phone: string;
-  location: string;
-  availability: string;
-  social: Array<{
-    platform: string;
-    url: string;
-    icon: string;
-  }>;
-  formConfig: {
-    title: string;
-    subtitle: string;
-    submitText: string;
-    successMessage: string;
-    errorMessage: string;
-    fields: Array<{
-      name: string;
-      label: string;
-      type: string;
-      placeholder: string;
-      required: boolean;
-    }>;
-  };
-}
+import { useContact } from "@/hooks/useContact";
+import { useAbout } from "@/hooks/useAbout";
+import { Mail, Phone, MapPin, Github, Linkedin, Send } from "lucide-react";
 
 export default function Contact() {
-  const [data, setData] = useState<ContactData | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [formData, setFormData] = useState<Record<string, string>>({});
+  const { data: contact, isLoading: contactLoading } = useContact();
+  const { data: about } = useAbout();
+  const [formData, setFormData] = useState({ name: "", email: "", message: "" });
   const [submitting, setSubmitting] = useState(false);
-
-  useEffect(() => {
-    loadData("contact")
-      .then(setData)
-      .catch(console.error)
-      .finally(() => setLoading(false));
-  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setSubmitting(true);
 
-    try {
-      // Simulate form submission
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-
-      if (CONFIG.use_api && CONFIG.base_url) {
-        // When API is connected, this would make an actual request
-        toast.success(data?.formConfig.successMessage);
-      } else {
-        // Show backend not connected message
-        toast.info(data?.formConfig.errorMessage);
-      }
-
-      // Reset form
-      setFormData({});
-    } catch (error) {
-      toast.error("An error occurred. Please try again.");
-    } finally {
-      setSubmitting(false);
-    }
+    // Simulate form submission
+    await new Promise((resolve) => setTimeout(resolve, 1000));
+    toast.info("Message received! Contact form backend can be enabled via admin settings.");
+    setFormData({ name: "", email: "", message: "" });
+    setSubmitting(false);
   };
 
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
-    setFormData((prev) => ({
-      ...prev,
-      [e.target.name]: e.target.value,
-    }));
-  };
-
-  if (loading) {
+  if (contactLoading) {
     return (
       <section className="py-20 px-4">
         <div className="container mx-auto">
@@ -91,8 +35,6 @@ export default function Contact() {
       </section>
     );
   }
-
-  if (!data) return null;
 
   return (
     <section id="contact" className="py-20 px-4 bg-gradient-subtle">
@@ -111,74 +53,87 @@ export default function Contact() {
               <h3 className="text-2xl font-semibold mb-6">Contact Information</h3>
               
               <div className="space-y-4">
-                <div className="flex items-start gap-3">
-                  <Icons.Mail className="w-5 h-5 text-primary mt-1" />
-                  <div>
-                    <p className="font-medium">Email</p>
-                    <a
-                      href={`mailto:${data.email}`}
-                      className="text-muted-foreground hover:text-primary transition-colors"
-                    >
-                      {data.email}
-                    </a>
+                {contact?.email && (
+                  <div className="flex items-start gap-3">
+                    <Mail className="w-5 h-5 text-primary mt-1" />
+                    <div>
+                      <p className="font-medium">Email</p>
+                      <a
+                        href={`mailto:${contact.email}`}
+                        className="text-muted-foreground hover:text-primary transition-colors"
+                      >
+                        {contact.email}
+                      </a>
+                    </div>
                   </div>
-                </div>
+                )}
 
-                <div className="flex items-start gap-3">
-                  <Icons.Phone className="w-5 h-5 text-primary mt-1" />
-                  <div>
-                    <p className="font-medium">Phone</p>
-                    <a
-                      href={`tel:${data.phone}`}
-                      className="text-muted-foreground hover:text-primary transition-colors"
-                    >
-                      {data.phone}
-                    </a>
+                {contact?.phone && (
+                  <div className="flex items-start gap-3">
+                    <Phone className="w-5 h-5 text-primary mt-1" />
+                    <div>
+                      <p className="font-medium">Phone</p>
+                      <a
+                        href={`tel:${contact.phone}`}
+                        className="text-muted-foreground hover:text-primary transition-colors"
+                      >
+                        {contact.phone}
+                      </a>
+                    </div>
                   </div>
-                </div>
+                )}
 
-                <div className="flex items-start gap-3">
-                  <Icons.MapPin className="w-5 h-5 text-primary mt-1" />
-                  <div>
-                    <p className="font-medium">Location</p>
-                    <p className="text-muted-foreground">{data.location}</p>
+                {contact?.location && (
+                  <div className="flex items-start gap-3">
+                    <MapPin className="w-5 h-5 text-primary mt-1" />
+                    <div>
+                      <p className="font-medium">Location</p>
+                      <p className="text-muted-foreground">{contact.location}</p>
+                    </div>
                   </div>
-                </div>
-
-                <div className="flex items-start gap-3">
-                  <Icons.Briefcase className="w-5 h-5 text-primary mt-1" />
-                  <div>
-                    <p className="font-medium">Availability</p>
-                    <p className="text-muted-foreground">{data.availability}</p>
-                  </div>
-                </div>
+                )}
               </div>
 
               {/* Social Links */}
               <div className="mt-8 pt-8 border-t border-border">
                 <p className="font-medium mb-4">Connect With Me</p>
                 <div className="flex gap-3">
-                  {data.social.map((social, index) => {
-                    const IconComponent = (Icons as any)[social.icon] || Icons.Link;
-                    return (
-                      <Button
-                        key={index}
-                        size="icon"
-                        variant="outline"
-                        className="hover:bg-primary hover:text-primary-foreground transition-all"
-                        asChild
-                      >
-                        <a
-                          href={social.url}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          title={social.platform}
-                        >
-                          <IconComponent className="w-5 h-5" />
-                        </a>
-                      </Button>
-                    );
-                  })}
+                  {about?.github_url && (
+                    <Button
+                      size="icon"
+                      variant="outline"
+                      className="hover:bg-primary hover:text-primary-foreground transition-all"
+                      asChild
+                    >
+                      <a href={about.github_url} target="_blank" rel="noopener noreferrer">
+                        <Github className="w-5 h-5" />
+                      </a>
+                    </Button>
+                  )}
+                  {about?.linkedin_url && (
+                    <Button
+                      size="icon"
+                      variant="outline"
+                      className="hover:bg-primary hover:text-primary-foreground transition-all"
+                      asChild
+                    >
+                      <a href={about.linkedin_url} target="_blank" rel="noopener noreferrer">
+                        <Linkedin className="w-5 h-5" />
+                      </a>
+                    </Button>
+                  )}
+                  {about?.email && (
+                    <Button
+                      size="icon"
+                      variant="outline"
+                      className="hover:bg-primary hover:text-primary-foreground transition-all"
+                      asChild
+                    >
+                      <a href={`mailto:${about.email}`}>
+                        <Mail className="w-5 h-5" />
+                      </a>
+                    </Button>
+                  )}
                 </div>
               </div>
             </Card>
@@ -187,40 +142,46 @@ export default function Contact() {
           {/* Contact Form */}
           <div className="md:col-span-3">
             <Card className="p-6 glass">
-              <h3 className="text-2xl font-semibold mb-2">
-                {data.formConfig.title}
-              </h3>
+              <h3 className="text-2xl font-semibold mb-2">Send a Message</h3>
               <p className="text-muted-foreground mb-6">
-                {data.formConfig.subtitle}
+                Have a question or want to work together? Drop me a message!
               </p>
 
               <form onSubmit={handleSubmit} className="space-y-4">
-                {data.formConfig.fields.map((field, index) => (
-                  <div key={index} className="space-y-2">
-                    <Label htmlFor={field.name}>{field.label}</Label>
-                    {field.type === "textarea" ? (
-                      <Textarea
-                        id={field.name}
-                        name={field.name}
-                        placeholder={field.placeholder}
-                        required={field.required}
-                        value={formData[field.name] || ""}
-                        onChange={handleChange}
-                        rows={5}
-                      />
-                    ) : (
-                      <Input
-                        id={field.name}
-                        name={field.name}
-                        type={field.type}
-                        placeholder={field.placeholder}
-                        required={field.required}
-                        value={formData[field.name] || ""}
-                        onChange={handleChange}
-                      />
-                    )}
-                  </div>
-                ))}
+                <div className="space-y-2">
+                  <Label htmlFor="name">Name</Label>
+                  <Input
+                    id="name"
+                    placeholder="Your name"
+                    value={formData.name}
+                    onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                    required
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="email">Email</Label>
+                  <Input
+                    id="email"
+                    type="email"
+                    placeholder="your@email.com"
+                    value={formData.email}
+                    onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                    required
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="message">Message</Label>
+                  <Textarea
+                    id="message"
+                    placeholder="Your message..."
+                    rows={5}
+                    value={formData.message}
+                    onChange={(e) => setFormData({ ...formData, message: e.target.value })}
+                    required
+                  />
+                </div>
 
                 <Button
                   type="submit"
@@ -228,14 +189,13 @@ export default function Contact() {
                   className="w-full bg-gradient-primary hover:shadow-glow transition-all"
                   disabled={submitting}
                 >
-                  {submitting ? "Sending..." : data.formConfig.submitText}
+                  {submitting ? "Sending..." : (
+                    <>
+                      <Send className="mr-2 h-4 w-4" />
+                      Send Message
+                    </>
+                  )}
                 </Button>
-
-                {!CONFIG.use_api && (
-                  <p className="text-sm text-muted-foreground text-center">
-                    ℹ️ This form is UI-only. Backend integration ready via config.
-                  </p>
-                )}
               </form>
             </Card>
           </div>

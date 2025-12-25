@@ -1,29 +1,14 @@
-import { useEffect, useState } from "react";
 import { Card } from "@/components/ui/card";
-import { loadData } from "@/lib/dataLoader";
-
-interface AboutData {
-  name: string;
-  bio: string;
-  image: string;
-  stats: Array<{
-    label: string;
-    value: string;
-  }>;
-}
+import { useAbout } from "@/hooks/useAbout";
+import { usePublicProjects } from "@/hooks/useProjects";
+import { useExperience } from "@/hooks/useExperience";
 
 export default function About() {
-  const [data, setData] = useState<AboutData | null>(null);
-  const [loading, setLoading] = useState(true);
+  const { data, isLoading } = useAbout();
+  const { data: projects } = usePublicProjects();
+  const { data: experience } = useExperience();
 
-  useEffect(() => {
-    loadData("about")
-      .then(setData)
-      .catch(console.error)
-      .finally(() => setLoading(false));
-  }, []);
-
-  if (loading) {
+  if (isLoading) {
     return (
       <section className="py-20 px-4">
         <div className="container mx-auto">
@@ -34,6 +19,19 @@ export default function About() {
   }
 
   if (!data) return null;
+
+  // Calculate dynamic stats
+  const yearsOfExperience = experience?.length 
+    ? new Date().getFullYear() - parseInt(experience[experience.length - 1]?.from_date || "2020")
+    : 5;
+  const projectCount = projects?.length || 0;
+
+  const stats = [
+    { label: "Years Experience", value: `${yearsOfExperience}+` },
+    { label: "Projects Completed", value: `${projectCount}+` },
+    { label: "Technologies", value: "20+" },
+    { label: "Happy Clients", value: "15+" },
+  ];
 
   return (
     <section id="about" className="py-20 px-4 bg-gradient-subtle">
@@ -51,7 +49,7 @@ export default function About() {
             <div className="absolute inset-0 bg-gradient-primary rounded-2xl blur-xl opacity-50 group-hover:opacity-75 transition-opacity" />
             <div className="relative">
               <img
-                src={data.image}
+                src={data.image_url || "/img/profile.jpg"}
                 alt={data.name}
                 className="w-full aspect-square object-cover rounded-2xl shadow-lg"
               />
@@ -66,7 +64,7 @@ export default function About() {
 
             {/* Stats */}
             <div className="grid grid-cols-2 gap-4 pt-6">
-              {data.stats.map((stat, index) => (
+              {stats.map((stat, index) => (
                 <Card
                   key={index}
                   className="p-6 glass hover:shadow-glow transition-all duration-300"

@@ -1,26 +1,13 @@
-import { useEffect, useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
-import { ArrowUp } from "lucide-react";
-import * as Icons from "lucide-react";
-import { loadData } from "@/lib/dataLoader";
-
-interface ContactData {
-  social: Array<{
-    platform: string;
-    url: string;
-    icon: string;
-  }>;
-}
+import { ArrowUp, Github, Linkedin, Mail } from "lucide-react";
+import { useAbout } from "@/hooks/useAbout";
 
 export default function Footer() {
-  const [data, setData] = useState<ContactData | null>(null);
+  const { data: about } = useAbout();
   const [showScrollTop, setShowScrollTop] = useState(false);
 
   useEffect(() => {
-    loadData("contact")
-      .then(setData)
-      .catch(console.error);
-
     const handleScroll = () => {
       setShowScrollTop(window.scrollY > 500);
     };
@@ -69,37 +56,50 @@ export default function Footer() {
           {/* Social */}
           <div>
             <h4 className="font-semibold mb-4">Connect</h4>
-            {data && (
-              <div className="flex gap-3">
-                {data.social.map((social, index) => {
-                  const IconComponent = (Icons as any)[social.icon] || Icons.Link;
-                  return (
-                    <Button
-                      key={index}
-                      size="icon"
-                      variant="outline"
-                      className="hover:bg-primary hover:text-primary-foreground transition-all"
-                      asChild
-                    >
-                      <a
-                        href={social.url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        title={social.platform}
-                      >
-                        <IconComponent className="w-5 h-5" />
-                      </a>
-                    </Button>
-                  );
-                })}
-              </div>
-            )}
+            <div className="flex gap-3">
+              {about?.github_url && (
+                <Button
+                  size="icon"
+                  variant="outline"
+                  className="hover:bg-primary hover:text-primary-foreground transition-all"
+                  asChild
+                >
+                  <a href={about.github_url} target="_blank" rel="noopener noreferrer">
+                    <Github className="w-5 h-5" />
+                  </a>
+                </Button>
+              )}
+              {about?.linkedin_url && (
+                <Button
+                  size="icon"
+                  variant="outline"
+                  className="hover:bg-primary hover:text-primary-foreground transition-all"
+                  asChild
+                >
+                  <a href={about.linkedin_url} target="_blank" rel="noopener noreferrer">
+                    <Linkedin className="w-5 h-5" />
+                  </a>
+                </Button>
+              )}
+              {about?.email && (
+                <Button
+                  size="icon"
+                  variant="outline"
+                  className="hover:bg-primary hover:text-primary-foreground transition-all"
+                  asChild
+                >
+                  <a href={`mailto:${about.email}`}>
+                    <Mail className="w-5 h-5" />
+                  </a>
+                </Button>
+              )}
+            </div>
           </div>
         </div>
 
         <div className="pt-8 border-t border-border text-center text-muted-foreground">
           <p>
-            &copy; {new Date().getFullYear()} Hanna. All rights reserved. Built
+            &copy; {new Date().getFullYear()} {about?.name || "Portfolio"}. All rights reserved. Built
             with React & TypeScript.
           </p>
         </div>
