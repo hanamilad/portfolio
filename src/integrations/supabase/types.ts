@@ -14,7 +14,180 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      about_content: {
+        Row: {
+          bio: string | null
+          email: string | null
+          github_url: string | null
+          id: string
+          image_url: string | null
+          linkedin_url: string | null
+          name: string
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          bio?: string | null
+          email?: string | null
+          github_url?: string | null
+          id?: string
+          image_url?: string | null
+          linkedin_url?: string | null
+          name: string
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          bio?: string | null
+          email?: string | null
+          github_url?: string | null
+          id?: string
+          image_url?: string | null
+          linkedin_url?: string | null
+          name?: string
+          title?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      contact_info: {
+        Row: {
+          email: string | null
+          id: string
+          location: string | null
+          phone: string | null
+          updated_at: string
+        }
+        Insert: {
+          email?: string | null
+          id?: string
+          location?: string | null
+          phone?: string | null
+          updated_at?: string
+        }
+        Update: {
+          email?: string | null
+          id?: string
+          location?: string | null
+          phone?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      experience: {
+        Row: {
+          company: string
+          created_at: string
+          details: string[] | null
+          display_order: number | null
+          from_date: string
+          id: string
+          role: string
+          to_date: string | null
+          updated_at: string
+        }
+        Insert: {
+          company: string
+          created_at?: string
+          details?: string[] | null
+          display_order?: number | null
+          from_date: string
+          id?: string
+          role: string
+          to_date?: string | null
+          updated_at?: string
+        }
+        Update: {
+          company?: string
+          created_at?: string
+          details?: string[] | null
+          display_order?: number | null
+          from_date?: string
+          id?: string
+          role?: string
+          to_date?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      projects: {
+        Row: {
+          created_at: string
+          description: string | null
+          display_order: number | null
+          featured: boolean | null
+          github_url: string | null
+          id: string
+          images: string[] | null
+          live_url: string | null
+          name: string
+          short_description: string | null
+          slug: string
+          status: string | null
+          tags: string[] | null
+          tech: string[] | null
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          display_order?: number | null
+          featured?: boolean | null
+          github_url?: string | null
+          id?: string
+          images?: string[] | null
+          live_url?: string | null
+          name: string
+          short_description?: string | null
+          slug: string
+          status?: string | null
+          tags?: string[] | null
+          tech?: string[] | null
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          display_order?: number | null
+          featured?: boolean | null
+          github_url?: string | null
+          id?: string
+          images?: string[] | null
+          live_url?: string | null
+          name?: string
+          short_description?: string | null
+          slug?: string
+          status?: string | null
+          tags?: string[] | null
+          tech?: string[] | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      skills: {
+        Row: {
+          category: string
+          display_order: number | null
+          id: string
+          skills: string[] | null
+          updated_at: string
+        }
+        Insert: {
+          category: string
+          display_order?: number | null
+          id?: string
+          skills?: string[] | null
+          updated_at?: string
+        }
+        Update: {
+          category?: string
+          display_order?: number | null
+          id?: string
+          skills?: string[] | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
