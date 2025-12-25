@@ -11,6 +11,7 @@ export interface AboutContent {
   github_url: string | null;
   linkedin_url: string | null;
   email: string | null;
+  resume_url: string | null;
   updated_at: string;
 }
 

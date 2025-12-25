@@ -6,6 +6,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { useAbout, useUpdateAbout } from "@/hooks/useAbout";
 import ImageUpload from "@/components/admin/ImageUpload";
+import FileUpload from "@/components/admin/FileUpload";
 import { Save } from "lucide-react";
 
 export default function AboutAdmin() {
@@ -20,6 +21,7 @@ export default function AboutAdmin() {
     github_url: "",
     linkedin_url: "",
     email: "",
+    resume_url: "",
   });
 
   useEffect(() => {
@@ -32,6 +34,7 @@ export default function AboutAdmin() {
         github_url: about.github_url || "",
         linkedin_url: about.linkedin_url || "",
         email: about.email || "",
+        resume_url: about.resume_url || "",
       });
     }
   }, [about]);
@@ -115,6 +118,22 @@ export default function AboutAdmin() {
                 />
               </div>
             </div>
+          </div>
+
+          {/* Resume Upload */}
+          <div className="space-y-2">
+            <Label>Resume / CV</Label>
+            <FileUpload
+              value={formData.resume_url}
+              onChange={(url) => setFormData({ ...formData, resume_url: url })}
+              onRemove={() => setFormData({ ...formData, resume_url: "" })}
+              folder="resume"
+              label="Upload your resume"
+              accept=".pdf,.doc,.docx"
+            />
+            <p className="text-xs text-muted-foreground">
+              This will appear as a download button on your portfolio
+            </p>
           </div>
 
           <div className="grid md:grid-cols-3 gap-6">

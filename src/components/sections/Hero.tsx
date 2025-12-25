@@ -51,17 +51,19 @@ export default function Hero() {
                 <ArrowRight className="ml-2 group-hover:translate-x-1 transition-transform" />
               </a>
             </Button>
-            <Button
-              size="lg"
-              variant="outline"
-              className="group border-2"
-              asChild
-            >
-              <a href="#projects">
-                View Projects
-                <Download className="ml-2 group-hover:translate-y-1 transition-transform" />
-              </a>
-            </Button>
+            {data.resume_url && (
+              <Button
+                size="lg"
+                variant="outline"
+                className="group border-2"
+                asChild
+              >
+                <a href={data.resume_url} target="_blank" rel="noopener noreferrer" download>
+                  Download CV
+                  <Download className="ml-2 group-hover:translate-y-1 transition-transform" />
+                </a>
+              </Button>
+            )}
           </div>
 
           {/* Social Links */}

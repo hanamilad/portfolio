@@ -23,6 +23,7 @@ export type Database = {
           image_url: string | null
           linkedin_url: string | null
           name: string
+          resume_url: string | null
           title: string
           updated_at: string
         }
@@ -34,6 +35,7 @@ export type Database = {
           image_url?: string | null
           linkedin_url?: string | null
           name: string
+          resume_url?: string | null
           title: string
           updated_at?: string
         }
@@ -45,6 +47,7 @@ export type Database = {
           image_url?: string | null
           linkedin_url?: string | null
           name?: string
+          resume_url?: string | null
           title?: string
           updated_at?: string
         }
